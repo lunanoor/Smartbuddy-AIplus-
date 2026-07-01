@@ -57,9 +57,9 @@ const App: React.FC = () => {
         try {
           const aiSummary = await generateSummary(text);
           setSummary(aiSummary);
-        } catch (aiError) {
+        } catch (aiError: any) {
           console.error('AI summary error:', aiError);
-          setSummary('AI summary unavailable. Check API key or connection.');
+          setSummary(`AI summary unavailable: ${aiError.message || 'Check API key or connection.'}`);
         }
 
         // Initialize Chat with System Prompt
@@ -92,9 +92,9 @@ const App: React.FC = () => {
 
       const response = await getAIResponse(fullContext);
       setChatMessages([...newMessages, { role: 'assistant', content: response }]);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Chat error:', error);
-      setChatMessages([...newMessages, { role: 'assistant', content: "I'm sorry, I encountered an error connecting to the AI service. Please check your API key or connection." }]);
+      setChatMessages([...newMessages, { role: 'assistant', content: `Error: ${error.message || "I'm sorry, I encountered an error connecting to the AI service. Please check your API key or connection."}` }]);
     } finally {
       setIsChatLoading(false);
     }
